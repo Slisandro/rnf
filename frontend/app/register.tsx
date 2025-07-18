@@ -1,11 +1,12 @@
+import CountryPrefixInput from "@/components/CountryPrefixInput";
 import InputFormik from "@/components/Input";
-import useLogin from "@/hooks/auth/useLogin";
+import useRegister from "@/hooks/auth/useRegister";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { TextInput } from "react-native-paper";
 
-export default function Login() {
+export default function Register() {
     const router = useRouter();
     const {
         values,
@@ -15,17 +16,44 @@ export default function Login() {
         handleChange,
         handleBlur,
         handleSubmit,
-    } = useLogin();
-
+        setFieldValue,
+    } = useRegister();
+    
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar style={"dark"} />
             <Text style={styles.title}>
-                Login in
+                Register in
                 <Text style={styles.titlePink}> Roomies</Text>
             </Text>
 
             <View style={styles.form}>
+                <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
+                    <InputFormik
+                        style={{ width: "45%" }}
+                        label="First Name"
+                        name="name"
+                        value={values.name}
+                        error={(touched.name && !!errors.name) as boolean}
+                        errorText={errors.name as string}
+                        handleChange={handleChange("name")}
+                        handleBlur={handleBlur("name")}
+                        left={<TextInput.Icon icon="human" size={20} style={{ opacity: .25 }} />}
+                    />
+
+                    <InputFormik
+                        style={{ width: "45%" }}
+                        label="Last Name"
+                        name="lastName"
+                        value={values.lastName}
+                        error={(touched.lastName && !!errors.lastName) as boolean}
+                        errorText={errors.lastName as string}
+                        handleChange={handleChange("lastName")}
+                        handleBlur={handleBlur("lastName")}
+                        left={<TextInput.Icon icon="human" size={20} style={{ opacity: .25 }} />}
+                    />
+                </View>
+
                 <InputFormik
                     label="Email"
                     name="email"
@@ -38,6 +66,40 @@ export default function Login() {
                     autoCapitalize="none"
                     left={<TextInput.Icon icon="email" size={20} style={{ opacity: .25 }} />}
                 />
+
+                <View
+                    style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        gap: 5
+                    }}
+                >
+                    <CountryPrefixInput
+                        label={"Prefix"}
+                        name={"countryCode"}
+                        value={values.countryCode}
+                        error={(touched.countryCode && !!errors.countryCode) as boolean}
+                        errorText={errors.countryCode as string}
+                        setFieldValue={setFieldValue}
+                        handleBlur={(field) => (e) => {
+                            handleBlur(field)(e);
+                        }}
+                        keyboardType="phone-pad"
+                        left={<TextInput.Icon icon="earth" size={20} style={{ opacity: .25 }} />}
+                    />
+                    <InputFormik
+                        label="Telephone"
+                        name="phone"
+                        value={values.phone}
+                        error={(touched.phone && !!errors.phone) as boolean}
+                        errorText={errors.phone as string}
+                        handleChange={handleChange("phone")}
+                        handleBlur={handleBlur("phone")}
+                        keyboardType="phone-pad"
+                        style={{ width: "60%" }}
+                        left={<TextInput.Icon icon="phone" size={20} style={{ opacity: .25 }} />}
+                    />
+                </View>
 
                 <InputFormik
                     label="Password"
@@ -63,13 +125,13 @@ export default function Login() {
                     disabled={loading}
                     style={styles.button}
                 >
-                    <Text style={styles.buttonText}>Sign in</Text>
+                    <Text style={styles.buttonText}>Register now</Text>
                 </TouchableOpacity>
 
                 <View style={styles.footer}>
-                    <Text>If you don't have an account, register </Text>
+                    <Text>If you already have an account, log in </Text>
                     <Text
-                        onPress={() => router.push("/register")}
+                        onPress={() => router.push("/login")}
                         style={styles.footerLink}
                     >
                         here
@@ -85,13 +147,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         paddingVertical: 20,
-        paddingHorizontal: 20,
-        marginBottom: 50
+        paddingHorizontal: 20
     },
     title: {
         color: "#0f0f0f",
         fontWeight: 900,
-        fontSize: 40,
+        fontSize: 38,
         textAlign: "center",
         marginBottom: 30,
     },
