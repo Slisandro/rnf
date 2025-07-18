@@ -17,6 +17,7 @@ interface InputFormikProps {
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters',
     left?: React.ReactNode,
     right?: React.ReactNode
+    mode?: "flat" | "outlined" | undefined
 }
 
 export default function InputFormik({
@@ -32,7 +33,8 @@ export default function InputFormik({
     secureTextEntry = false,
     autoCapitalize = "sentences",
     left,
-    right
+    right,
+    mode = "flat"
 }: InputFormikProps) {
     return (
         <View style={style}>
@@ -45,7 +47,7 @@ export default function InputFormik({
                 style={styles.input}
                 keyboardType={keyboardType}
                 secureTextEntry={secureTextEntry}
-                mode="flat"
+                mode={mode}
                 autoCapitalize={autoCapitalize}
                 error={error}
                 left={left}
