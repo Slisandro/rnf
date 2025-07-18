@@ -1,8 +1,8 @@
+import { registerUserService } from "@/services/auth";
 import { useRouter } from "expo-router";
 import { useFormik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
-// import { registerUserService } from "../firebase/auth/services";
 
 export default function useRegister() {
     const router = useRouter();
@@ -39,9 +39,8 @@ export default function useRegister() {
             setLoading(true);
 
             try {
-                // const user = await registerUserService(values);
-                if (true) { // user
-                    // Redirige al dashboard después del registro
+                const user = await registerUserService(values);
+                if (user) {
                     router.replace("/login");
                 }
             } catch (err) {

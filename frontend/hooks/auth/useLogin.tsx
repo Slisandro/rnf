@@ -1,16 +1,15 @@
+import { useSession } from "@/contexts/authentication";
+import { loginUserService } from "@/services/auth";
 import { useRouter } from "expo-router";
 import { useFormik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
-// import { loginUserService } from "../firebase/auth/services";
-// import { useSession } from "../contexts/authentication";
 
 export default function useLogin() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  // const { signIn } = useSession();
+  const { signIn } = useSession();
 
-  // Validaciones
   const validationSchema = Yup.object().shape({
     email: Yup.string()
       .email("Is required.")
@@ -20,7 +19,6 @@ export default function useLogin() {
       .required("Is required."),
   });
 
-  // Formik para manejar el formulario
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -32,10 +30,9 @@ export default function useLogin() {
       setLoading(true);
 
       try {
-        // const user = await loginUserService(email, password);
-        if (true) { // user
-          // signIn(user);
-          // Redirige al dashboard después del registro
+        const user = await loginUserService(email, password);
+        if (user) {
+          signIn(user);
           router.replace("/(tabs)");
         }
       } catch (err) {

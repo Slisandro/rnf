@@ -1,8 +1,8 @@
+import resetPasswordUserService from "@/services/auth";
 import { useRouter } from "expo-router";
 import { useFormik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
-// import resetPassword, { loginUserService } from "../firebase/auth/services";
 
 export default function useResetPassword() {
     const router = useRouter();
@@ -26,7 +26,7 @@ export default function useResetPassword() {
             setLoading(true);
 
             try {
-                // await resetPassword(email);
+                await resetPasswordUserService(email);
                 router.replace("/login");
             } catch (err) {
                 console.log({ err });
